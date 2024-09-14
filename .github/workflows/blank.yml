@@ -1,15 +1,16 @@
-name: Print repo name
+name: Greeting on variable day
 
 on:
-    workflow_dispatch:
+  workflow_dispatch
+
+env:
+  DAY_OF_WEEK: Monday
 
 jobs:
-    print-name:
-        runs-on: ubuntu-latest
-        steps:
-            - name: get-name
-              run: |
-                  echo "REPO_NAME=$(basename ${{ github.repository }})" >> $GITHUB_ENV
-            - name: print-name
-              run: |
-                  echo "${{ env.REPO_NAME }}"
+  greeting_job:
+    runs-on: ubuntu-latest
+    env:
+      Greeting: Hello
+    steps:
+      - name: "Say Hello Mona it's Monday"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
