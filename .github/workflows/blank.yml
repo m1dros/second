@@ -1,16 +1,41 @@
-name: Greeting on variable day
-
-on:
-  workflow_dispatch
-
+name: Action for 3 jobs
 env:
-  DAY_OF_WEEK: Monday
-
+  COMMITNAME : Commit-name-${{ github.sha }}
+on:
+  push:
+    branches: [ "main" ]
 jobs:
-  greeting_job:
+  job1:
     runs-on: ubuntu-latest
-    env:
-      Greeting: Hello
+
     steps:
-      - name: "Say Hello Mona it's Monday"
-        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+    - name: Print Hello
+      run: |
+        echo "Hello!"
+        lsb_release -a
+        echo "Its is ${{ env.COMMITNAME }}"
+
+  job2:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone my repo
+      uses: actions/checkout@v1
+
+    - name: Exec test.sh
+      run: |
+        chmod +x test.sh
+        exec ./test.sh
+  
+  job3:
+    runs-on: ubuntu-latest
+      
+      steps:
+      - name: First name
+        run: |
+         echo "FIRST_NAME=Iliya" >> GITHUB_ENV
+         LAST_NAME=Spirin
+         echo "First Name: ${{ env.FIRST_NAME }}
+         echo "Last Name: $LAST_NAME"
+         echo "Phone Number: ${{ secrets.PHONE_NUMBER }}"
+
